@@ -66,9 +66,9 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     )
 
     return (
-        <Button id="cbonramp-button-container"
+        <Button
             className="h-14 w-full bg-gradient-to-r from-violet-600 to-purple-600 text-base font-medium shadow-md transition-all hover:from-violet-700 hover:to-purple-700 hover:cursor-pointer"
-            onClick={handleOnPress} disabled={!isReady}>
+            disabled={!isReady}>
             <CoinbaseIcon />
             Buy with Coinbase
         </Button>

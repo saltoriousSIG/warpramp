@@ -53,6 +53,7 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
 
     const handleAddFrame = useCallback(async () => {
         await sdk.actions.addFrame();
+        setIsFrameAdding(false);
     }, []);
 
 
@@ -74,7 +75,10 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
                         className="w-[95%] m-auto"
                     >
                         <Button
-                            onClick={handleAddFrame}
+                            onClick={() => {
+                                setIsFrameAdding(true);
+                                handleAddFrame();
+                            }}
                             disabled={isFrameAdding}
                             variant="outline"
                             className="font-display relative h-12 w-full border-indigo-200 bg-gradient-to-r from-indigo-50 to-violet-50 text-base font-medium tracking-wide text-indigo-700 transition-all hover:border-indigo-300 hover:shadow-sm disabled:opacity-80"
