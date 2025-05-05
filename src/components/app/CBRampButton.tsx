@@ -28,7 +28,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
             appId: (import.meta as any).env.VITE_CB_APP_ID, // Obtained from Coinbase Developer Platform
             target: '#cbonramp-button-container',
             widgetParameters: {
-                addresses: { [destinationWalletAddress]: ['base'], "0xAB51Bc7aa8636328E91bCC1B6bf701998fD3C581": ['base'] },
+                addresses: { [destinationWalletAddress]: ['base'] },
                 presetFiatAmount: transferAmount, // Prefill 100 USD
                 sourceCurrency: 'USD', // Fiat currency
                 assets: ["ETH"],
@@ -48,7 +48,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 console.log('Onramp event:', event);
             },
             experienceLoggedIn: 'embedded' as any,
-            experienceLoggedOut: 'embedded' as any,
+            experienceLoggedOut: 'popup' as any,
             closeOnSuccess: true,
             closeOnExit: true
         };
