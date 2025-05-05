@@ -28,8 +28,8 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 assets: ["ETH"],
                 defaultNetwork: 'base', //
             },
-            onSuccess: () => {
-                sdk.actions.openUrl("https://warpcast.com/miniapps/wQbOaCvviEOv/warp-ramp")
+            onSuccess: async () => {
+                await sdk.actions.close()
                 toast("Your purchase was successful")
             },
             onExit: (error: any) => {
