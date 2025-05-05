@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { generateOnRampURL } from '@coinbase/cbpay-js';
 import { Button } from "../ui/button";
 import { CoinbaseIcon } from "../core/icons";
-import { sdk } from "@farcaster/frame-sdk";
 import { toast } from "sonner";
 interface CBRampButtonProps {
     destinationWalletAddress: string;
