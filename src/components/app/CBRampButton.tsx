@@ -33,7 +33,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     const handleOnPress = useCallback(
         () => {
             if (!transferAmount || isNaN(transferAmount)) return toast("Please enter an amount!")
-            if (rampUrl) sdk.actions.openUrl(rampUrl)
+            if (rampUrl) window.location.href = rampUrl;
         }, [rampUrl, transferAmount]
     )
 
