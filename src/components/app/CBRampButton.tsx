@@ -13,33 +13,23 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     destinationWalletAddress,
     transferAmount
 }) => {
-    const [mobileDevice, setMobileDevice] = useState<boolean>();
     const [isReady, setIsReady] = useState(false);
     const onrampInstance = useRef<any>();
-
-    useEffect(() => {
-        const userAgent = navigator.userAgent;
-        const isMobile = /Mobi|Android|iPhone|iPad/.test(userAgent);
-        setMobileDevice(isMobile);
-    }, [])
 
     useEffect(() => {
         const options = {
             appId: (import.meta as any).env.VITE_CB_APP_ID, // Obtained from Coinbase Developer Platform
             target: '#cbonramp-button-container',
             widgetParameters: {
-                addresses: { [destinationWalletAddress]: ['base'] },
+                addresses: { [destinationWalletAddress]: ['base'], "0xAB51Bc7aa8636328E91bCC1B6bf701998fD3C581": ['base'] },
                 presetFiatAmount: transferAmount, // Prefill 100 USD
                 sourceCurrency: 'USD', // Fiat currency
                 assets: ["ETH"],
                 defaultNetwork: 'base', //
+                redirectUrl: 'https://warpramp-ztqy.vercel.app/'
             },
             onSuccess: () => {
-                if (mobileDevice) {
-                    window.location.href = "https://warpramp-ztqy.vercel.app/"
-                } else {
-                    toast("Your purchase was successful")
-                }
+                toast("Your purchase was successful")
             },
             onExit: (error: any) => {
                 console.error('Onramp exited:', error);
@@ -49,8 +39,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
             },
             experienceLoggedIn: 'embedded' as any,
             experienceLoggedOut: 'popup' as any,
-            closeOnSuccess: true,
-            closeOnExit: true
+            closeOnSuccess: true
         };
 
         if (onrampInstance.current) {
@@ -70,7 +59,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 onrampInstance.current.destroy();
             }
         };
-    }, [destinationWalletAddress, transferAmount, mobileDevice]);
+    }, [destinationWalletAddress, transferAmount]);
 
     const handleOnPress = useCallback(
         () => {
@@ -79,10 +68,12 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     )
 
     return (
-        <Button id="cbonramp-button-container"
+        <Button
+            id="cbonramp-button-container"
             className="h-14 w-full bg-gradient-to-r from-violet-600 to-purple-600 text-base font-medium shadow-md transition-all hover:from-violet-700 hover:to-purple-700 hover:cursor-pointer"
             onClick={handleOnPress}
-            disabled={!isReady}>
+            disabled={!isReady}
+        >
             <CoinbaseIcon />
             Buy with Coinbase
         </Button>
