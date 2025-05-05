@@ -3,6 +3,7 @@ import { initOnRamp } from '@coinbase/cbpay-js';
 import { Button } from "../ui/button";
 import { CoinbaseIcon } from "../core/icons";
 import { toast } from "sonner"
+import { sdk } from "@farcaster/frame-sdk";
 
 interface CBRampButtonProps {
     destinationWalletAddress: string;
@@ -28,6 +29,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 defaultNetwork: 'base', //
             },
             onSuccess: () => {
+                sdk.actions.openUrl("https://warpcast.com/miniapps/wQbOaCvviEOv/warp-ramp")
                 toast("Your purchase was successful")
             },
             onExit: (error: any) => {
