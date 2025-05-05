@@ -16,6 +16,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     const [isReady, setIsReady] = useState(false);
     const [isInMobile, setIsInMobile] = useState<boolean>(false);
     const onrampInstance = useRef<any>();
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const isMobile = /Mobi|Android|iPhone|iPad|iPod|warpcast/i.test(navigator.userAgent);
@@ -70,22 +71,47 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
         };
     }, [destinationWalletAddress, transferAmount, isInMobile]);
 
-    const handleOnPress = useCallback(
-        () => {
+    const handleOnPress = useCallback(() => {
+        // Reset error state
+        setError(null);
+
+        // Validation logic for transferAmount
+        const amount = Number(transferAmount); // Convert to number if string
+        if (isNaN(amount)) {
+            setError("Please enter a valid amount.");
+            return;
+        }
+        if (amount <= 2) {
+            setError("Amount must be greater than 2.");
+            return;
+        }
+        // Add more validation as needed, e.g., max amount
+        if (amount > 5000) {
+            setError("Amount exceeds maximum limit of 5,000.");
+            return;
+        }
+
+        // Open CBPay widget only if validation passes
+        if (onrampInstance.current) {
             onrampInstance.current.open();
-        }, [transferAmount]
-    )
+        } else {
+            setError("Coinbase widget is not initialized.");
+        }
+    }, [transferAmount, onrampInstance]); // Include onrampInstance in dependencies
 
     return (
-        <Button
-            id="cbonramp-button-container"
-            className="h-14 w-full bg-gradient-to-r from-violet-600 to-purple-600 text-base font-medium shadow-md transition-all hover:from-violet-700 hover:to-purple-700 hover:cursor-pointer"
-            onClick={handleOnPress}
-            disabled={!isReady}
-        >
-            <CoinbaseIcon />
-            Buy with Coinbase
-        </Button>
+        <div className="flex flex-col items-center justify-center space-y-2">
+            <Button
+                id="cbonramp-button-container"
+                className="h-14 w-full bg-gradient-to-r from-violet-600 to-purple-600 text-base font-medium shadow-md transition-all hover:from-violet-700 hover:to-purple-700 hover:cursor-pointer"
+                onClick={handleOnPress}
+                disabled={!isReady}
+            >
+                <CoinbaseIcon />
+                Buy with Coinbase
+            </Button>
+            {error && <p className="text-red-500 mt-2">{error}</p>} {/* Optional error display */}
+        </div>
     );
 }
 
