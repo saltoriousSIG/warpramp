@@ -30,12 +30,6 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
         setAmount(e.target.value)
     }
 
-    const handleFundWallet = () => {
-        // This would integrate with Coinbase onramp API
-        console.log(`Funding wallet with $${amount}`)
-        // Launch Coinbase onramp flow
-    }
-
     useEffect(() => {
         const load = async () => {
             const context = await sdk.context;

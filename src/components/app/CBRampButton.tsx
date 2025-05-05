@@ -46,6 +46,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
         }
 
         initOnRamp(options, (error, instance) => {
+            if (error) return
             if (instance) {
                 onrampInstance.current = instance;
                 setIsReady(true);
