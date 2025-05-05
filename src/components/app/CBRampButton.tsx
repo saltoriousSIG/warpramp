@@ -15,7 +15,6 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
 }) => {
     const [isReady, setIsReady] = useState(false);
     const [isInMobile, setIsInMobile] = useState<boolean>(false);
-    const [isWidgetVisible, setIsWidgetVisible] = useState(false);
     const onrampInstance = useRef<any>();
 
     useEffect(() => {
@@ -26,7 +25,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     useEffect(() => {
         const options = {
             appId: (import.meta as any).env.VITE_CB_APP_ID, // Obtained from Coinbase Developer Platform
-            target: '#cb-onramp-container',
+            target: '#cbonramp-button-container',
             widgetParameters: {
                 addresses: { [destinationWalletAddress]: ['base'] },
                 presetFiatAmount: transferAmount, // Prefill 100 USD
@@ -36,11 +35,9 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 redirectUrl: "https://warpramp-ztqy.vercel.app/",
             },
             onSuccess: () => {
-                setIsWidgetVisible(false);
                 toast("Your purchase was successful")
             },
             onExit: (error: any) => {
-                setIsWidgetVisible(false);
                 console.error('Onramp exited:', error);
             },
             onEvent: (event: any) => {
@@ -73,29 +70,20 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
 
     const handleOnPress = useCallback(
         () => {
-            setIsWidgetVisible(true);
             onrampInstance.current.open();
         }, [transferAmount]
     )
 
     return (
-        <>
-            {!isWidgetVisible ? (
-                <Button
-                    className="h-14 w-full bg-gradient-to-r from-violet-600 to-purple-600 text-base font-medium shadow-md transition-all hover:from-violet-700 hover:to-purple-700 hover:cursor-pointer"
-                    onClick={handleOnPress}
-                    disabled={!isReady}
-                >
-                    <CoinbaseIcon />
-                    Buy with Coinbase
-                </Button>
-            ) : (
-                <div id="cb-onramp-container">
-                    {/* Widget mounts here automatically in embedded mode */}
-                </div>
-
-            )}
-        </>
+        <Button
+            id="cbonramp-button-container"
+            className="h-14 w-full bg-gradient-to-r from-violet-600 to-purple-600 text-base font-medium shadow-md transition-all hover:from-violet-700 hover:to-purple-700 hover:cursor-pointer"
+            onClick={handleOnPress}
+            disabled={!isReady}
+        >
+            <CoinbaseIcon />
+            Buy with Coinbase
+        </Button>
     );
 }
 
