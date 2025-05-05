@@ -10,7 +10,7 @@
     "iconUrl": "https://warpramp-ztqy.vercel.app/icon.png",
     "homeUrl": "https://warpramp-ztqy.vercel.app/",
     "imageUrl": "https://warpramp-ztqy.vercel.app/image.png",
-    "buttonTitle": "Check this out",
+    "buttonTitle": "Fund your Warplet",
     "splashImageUrl": "https://warpramp-ztqy.vercel.app/splash.png",
     "splashBackgroundColor": "#eeccff",
     "webhookUrl": "https://warpramp-ztqy.vercel.app/api/webhook"
