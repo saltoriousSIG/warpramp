@@ -26,7 +26,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     useEffect(() => {
         const options = {
             appId: (import.meta as any).env.VITE_CB_APP_ID, // Obtained from Coinbase Developer Platform
-            target: '#cbonramp-button-container',
+            target: '#cb-onramp-container',
             widgetParameters: {
                 addresses: { [destinationWalletAddress]: ['base'] },
                 presetFiatAmount: transferAmount, // Prefill 100 USD
@@ -82,7 +82,6 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
         <>
             {!isWidgetVisible ? (
                 <Button
-                    id="cbonramp-button-container"
                     className="h-14 w-full bg-gradient-to-r from-violet-600 to-purple-600 text-base font-medium shadow-md transition-all hover:from-violet-700 hover:to-purple-700 hover:cursor-pointer"
                     onClick={handleOnPress}
                     disabled={!isReady}
@@ -91,7 +90,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                     Buy with Coinbase
                 </Button>
             ) : (
-                <div id="cbpay-widget-container">
+                <div id="cb-onramp-container">
                     {/* Widget mounts here automatically in embedded mode */}
                 </div>
 
