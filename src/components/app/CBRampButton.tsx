@@ -25,6 +25,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 presetFiatAmount: transferAmount, // Prefill 100 USD
                 sourceCurrency: 'USD', // Fiat currency
                 assets: ["ETH"],
+                redirectUrl: "https://warpramp-ztqy.vercel.app/",
                 defaultNetwork: 'base', //
             },
             onSuccess: async () => {
@@ -36,7 +37,6 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
             onEvent: (event: any) => {
                 console.log('Onramp event:', event);
             },
-            redirectUrl: "https://warpramp-ztqy.vercel.app/",
             experienceLoggedIn: 'embedded' as any,
             experienceLoggedOut: 'embedded' as any,
             closeOnSuccess: true,
