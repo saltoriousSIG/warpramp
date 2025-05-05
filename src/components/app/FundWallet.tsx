@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -8,12 +8,14 @@ import { sdk } from "@farcaster/frame-sdk";
 import axios from "axios";
 import CBRampButton from "./CBRampButton"
 import { motion } from "framer-motion"
-
+import { FrameIcon } from "../core/icons"
+import { Loader } from "lucide-react"
 interface WarpRampProps {
 }
 
 const WarpRamp: React.FC<WarpRampProps> = () => {
     const [amount, setAmount] = useState<string>("")
+    const [isFrameAdding, setIsFrameAdding] = useState<boolean>(false);
     const [selectedPreset, setSelectedPreset] = useState<number | null>(null)
     const [account, setAccount] = useState<string>("");
     const [fUser, setFUser] = useState<any>({});
@@ -49,8 +51,13 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
     }, [account, fUser]);
 
 
+    const handleAddFrame = useCallback(async () => {
+        await sdk.actions.addFrame();
+    }, []);
+
+
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-zinc-50 to-zinc-100 p-4 font-sans">
+        <div className="flex  flex-col min-h-screen items-center justify-center bg-gradient-to-br from-zinc-50 to-zinc-100 p-4 font-sans">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -58,7 +65,52 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
                 className="w-full max-w-md"
             >
                 <Card className="overflow-hidden border-0 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)]">
+                    <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.7 }}
+                        className="w-[95%] m-auto"
+                    >
+                        <Button
+                            onClick={handleAddFrame}
+                            disabled={isFrameAdding}
+                            variant="outline"
+                            className="font-display relative h-12 w-full border-indigo-200 bg-gradient-to-r from-indigo-50 to-violet-50 text-base font-medium tracking-wide text-indigo-700 transition-all hover:border-indigo-300 hover:shadow-sm disabled:opacity-80"
+                        >
+                            {isFrameAdding ? (
+                                <motion.div
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                                    className="mr-2"
+                                >
+                                    <Loader className="h-5 w-5" />
+                                </motion.div>
+                            ) : (
+                                <>
+                                    <span className="mr-2">Add Frame</span>
+                                    <FrameIcon className="h-5 w-5" />
+                                </>
+                            )}
+
+                            <motion.span
+                                className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-bold text-white"
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 500,
+                                    damping: 15,
+                                    delay: 1.0,
+                                }}
+                            >
+                                +
+                            </motion.span>
+                        </Button>
+                    </motion.div>
                     <CardHeader className="bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500 pb-8 pt-6 text-white">
+
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -165,6 +217,8 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
                     </div>
                 </Card>
             </motion.div>
+
+
         </div>
     )
 }
