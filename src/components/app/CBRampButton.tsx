@@ -38,7 +38,9 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
             },
             experienceLoggedIn: 'embedded' as any,
             experienceLoggedOut: 'embedded' as any,
-            closeOnSuccess: true
+            closeOnSuccess: true,
+            closeOnExit: true,
+            redirectUrl: "https://warpramp-ztqy.vercel.app/"
         };
 
         if (onrampInstance.current) {
