@@ -1,17 +1,18 @@
 {
   "accountAssociation": {
-    "header": "eyJmaWQiOjM2MjEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHgyY2Q4NWEwOTMyNjFmNTkyNzA4MDRBNkVBNjk3Q2VBNENlQkVjYWZFIn0",
-    "payload": "eyJkb21haW4iOiJtaW50LWRlbW8ucmVwbGl0LmFwcCJ9",
-    "signature": "MHhkYTczYjA4MjQ4NmU5NWRjNTJkMjExNTg4NzVhMzA0ZDg2NzBhYTk4YzlhYjdmNDViZWMwZmQzM2M4ZTU4OTQ5MTgzODllYjllMmQ2M2IyZGFkMDM5NDRiYzAzZDA2YjkyYTcxNjZiMmM2ZDA5YmZlZjFkOThjZGI2MGFhYzc2YTFj"
+    "header": "eyJmaWQiOjQ4MzcxMywidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweGQxOTE4QWI3NDljYTlGZkZkODNGMDBCMDQ1MWY3MWYyMTA4ODE3MDQifQ",
+    "payload": "eyJkb21haW4iOiJ3YXJwcmFtcC16dHF5LnZlcmNlbC5hcHAifQ",
+    "signature": "MHg1MDY1ZTk4Y2E1MWVmYjZhYjIwMjQ3ZGUzMTMwODE5MDFkYmRjNTlkNDFjOWFhNWM5MTBjMGMxZTAzNjk0ZTJkMWNhMTE0NjU4MDcwOGY0MjQ2YjU1MDVlNzY3ZTUwNzJlYjQwMWMxY2E1Zjk5MWMyMzM2NGEwYjg0OGNkMTI2NDFj"
   },
   "frame": {
     "version": "1",
     "name": "Warp Ramp",
-    "iconUrl": "https://mint-demo.replit.app/icon.png",
-    "homeUrl": "https://mint-demo.replit.app/",
-    "imageUrl": "https://mint-demo.replit.app/nft.png",
-    "buttonTitle": "Mint",
-    "splashImageUrl": "https://mint-demo.replit.app/icon.png",
-    "splashBackgroundColor": "#ffffff"
+    "iconUrl": "https://warpramp-ztqy.vercel.app/icon.png",
+    "homeUrl": "https://warpramp-ztqy.vercel.app/",
+    "imageUrl": "https://warpramp-ztqy.vercel.app/image.png",
+    "buttonTitle": "Check this out",
+    "splashImageUrl": "https://warpramp-ztqy.vercel.app/splash.png",
+    "splashBackgroundColor": "#eeccff",
+    "webhookUrl": "https://warpramp-ztqy.vercel.app/api/webhook"
   }
 }
