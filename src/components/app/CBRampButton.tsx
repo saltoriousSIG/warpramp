@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { initOnRamp } from '@coinbase/cbpay-js';
+import { initOnRamp, InitOnRampParams } from '@coinbase/cbpay-js';
 import { Button } from "../ui/button";
 import { CoinbaseIcon } from "../core/icons";
 import { toast } from "sonner"
@@ -23,16 +23,14 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     }, [])
 
     useEffect(() => {
-        const options = {
+        const options: InitOnRampParams = {
             appId: (import.meta as any).env.VITE_CB_APP_ID, // Obtained from Coinbase Developer Platform
             target: '#cbonramp-button-container',
             widgetParameters: {
                 addresses: { [destinationWalletAddress]: ['base'] },
                 presetFiatAmount: transferAmount, // Prefill 100 USD
-                sourceCurrency: 'USD', // Fiat currency
                 assets: ["ETH"],
                 defaultNetwork: 'base', //
-                redirectUrl: "https://warpramp-ztqy.vercel.app/",
             },
             onSuccess: () => {
                 toast("Your purchase was successful")
@@ -48,6 +46,9 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
             closeOnSuccess: true,
             closeOnExit: true
         };
+        if (isInMobile) {
+            options.widgetParameters.redirectUrl = "https://warpramp-ztqy.vercel.app/"
+        }
 
         if (onrampInstance.current) {
             onrampInstance.current.destroy();
