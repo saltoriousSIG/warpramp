@@ -29,7 +29,6 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 defaultNetwork: 'base', //
             },
             onSuccess: async () => {
-                await sdk.actions.close()
                 toast("Your purchase was successful")
             },
             onExit: (error: any) => {
