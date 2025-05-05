@@ -14,7 +14,14 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     transferAmount
 }) => {
     const [isReady, setIsReady] = useState(false);
+    const [isInMobile, setIsInMobile] = useState<boolean>(false);
+    const [isWidgetVisible, setIsWidgetVisible] = useState(false);
     const onrampInstance = useRef<any>();
+
+    useEffect(() => {
+        const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        setIsInMobile(isMobile);
+    }, [])
 
     useEffect(() => {
         const options = {
@@ -29,17 +36,20 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 redirectUrl: "https://warpramp-ztqy.vercel.app/",
             },
             onSuccess: () => {
+                setIsWidgetVisible(false);
                 toast("Your purchase was successful")
             },
             onExit: (error: any) => {
+                setIsWidgetVisible(false);
                 console.error('Onramp exited:', error);
             },
             onEvent: (event: any) => {
                 console.log('Onramp event:', event);
             },
-            experienceLoggedIn: 'embedded' as any,
-            experienceLoggedOut: 'popup' as any,
-            closeOnSuccess: true
+            experienceLoggedIn: "embedded" as any,
+            experienceLoggedOut: 'embedded' as any,
+            closeOnSuccess: true,
+            closeOnExit: true
         };
 
         if (onrampInstance.current) {
@@ -59,24 +69,34 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 onrampInstance.current.destroy();
             }
         };
-    }, [destinationWalletAddress, transferAmount]);
+    }, [destinationWalletAddress, transferAmount, isInMobile]);
 
     const handleOnPress = useCallback(
         () => {
+            setIsWidgetVisible(true);
             onrampInstance.current.open();
         }, [transferAmount]
     )
 
     return (
-        <Button
-            id="cbonramp-button-container"
-            className="h-14 w-full bg-gradient-to-r from-violet-600 to-purple-600 text-base font-medium shadow-md transition-all hover:from-violet-700 hover:to-purple-700 hover:cursor-pointer"
-            onClick={handleOnPress}
-            disabled={!isReady}
-        >
-            <CoinbaseIcon />
-            Buy with Coinbase
-        </Button>
+        <>
+            {!isWidgetVisible ? (
+                <Button
+                    id="cbonramp-button-container"
+                    className="h-14 w-full bg-gradient-to-r from-violet-600 to-purple-600 text-base font-medium shadow-md transition-all hover:from-violet-700 hover:to-purple-700 hover:cursor-pointer"
+                    onClick={handleOnPress}
+                    disabled={!isReady}
+                >
+                    <CoinbaseIcon />
+                    Buy with Coinbase
+                </Button>
+            ) : (
+                <div id="cbpay-widget-container">
+                    {/* Widget mounts here automatically in embedded mode */}
+                </div>
+
+            )}
+        </>
     );
 }
 
