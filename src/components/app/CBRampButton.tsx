@@ -18,7 +18,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     const onrampInstance = useRef<any>();
 
     useEffect(() => {
-        const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const isMobile = /Mobi|Android|iPhone|iPad|iPod|warpcast/i.test(navigator.userAgent);
         setIsInMobile(isMobile);
     }, [])
 
@@ -46,6 +46,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
             closeOnSuccess: true,
             closeOnExit: true
         };
+
         if (isInMobile) {
             options.widgetParameters.redirectUrl = "https://warpramp-ztqy.vercel.app/"
         }
