@@ -13,8 +13,16 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     destinationWalletAddress,
     transferAmount
 }) => {
+    const [mobileDevice, setMobileDevice] = useState<boolean>();
     const [isReady, setIsReady] = useState(false);
     const onrampInstance = useRef<any>();
+
+    useEffect(() => {
+        const userAgent = navigator.userAgent;
+        const isMobile = /Mobi|Android|iPhone|iPad/.test(userAgent);
+        setMobileDevice(isMobile);
+    }, [])
+
     useEffect(() => {
         const options = {
             appId: (import.meta as any).env.VITE_CB_APP_ID, // Obtained from Coinbase Developer Platform
@@ -27,8 +35,11 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 defaultNetwork: 'base', //
             },
             onSuccess: () => {
-                onrampInstance.current.destroy()
-                toast("Your purchase was successful")
+                if (mobileDevice) {
+                    window.location.href = "https://warpramp-ztqy.vercel.app/"
+                } else {
+                    toast("Your purchase was successful")
+                }
             },
             onExit: (error: any) => {
                 console.error('Onramp exited:', error);
@@ -58,7 +69,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 onrampInstance.current.destroy();
             }
         };
-    }, [destinationWalletAddress, transferAmount]);
+    }, [destinationWalletAddress, transferAmount, mobileDevice]);
 
     const handleOnPress = useCallback(
         () => {
