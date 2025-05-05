@@ -27,7 +27,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 assets: ["ETH"],
                 defaultNetwork: 'base', //
             },
-            onSuccess: async () => {
+            onSuccess: () => {
                 toast("Your purchase was successful")
             },
             onExit: (error: any) => {
@@ -37,7 +37,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 console.log('Onramp event:', event);
             },
             experienceLoggedIn: 'embedded' as any,
-            experienceLoggedOut: 'embedded' as any,
+            experienceLoggedOut: 'popup' as any,
             closeOnSuccess: true
         };
 
