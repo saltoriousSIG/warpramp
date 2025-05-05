@@ -27,6 +27,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 defaultNetwork: 'base', //
             },
             onSuccess: () => {
+                onrampInstance.current.destroy()
                 toast("Your purchase was successful")
             },
             onExit: (error: any) => {
@@ -37,8 +38,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
             },
             experienceLoggedIn: 'embedded' as any,
             experienceLoggedOut: 'popup' as any,
-            closeOnSuccess: true,
-            closeOnExit: true,
+            closeOnSuccess: true
         };
 
         if (onrampInstance.current) {
