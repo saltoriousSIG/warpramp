@@ -231,3 +231,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+.jakarta {
+  font-family: "Jakarta", sans-serif;
+}
+
+.outfit {
+  font-family: "outfit", sans-serif;
+}

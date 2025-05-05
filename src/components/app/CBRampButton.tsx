@@ -13,7 +13,6 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     destinationWalletAddress,
     transferAmount
 }) => {
-    console.log(transferAmount)
     const [isReady, setIsReady] = useState(false);
     const onrampInstance = useRef<any>();
     useEffect(() => {
@@ -66,10 +65,10 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
         }, [transferAmount]
     )
 
-
-
     return (
-        <Button id="cbonramp-button-container" className="bg-blue-500 hover:cursor-pointer" onClick={handleOnPress} disabled={!isReady}>
+        <Button id="cbonramp-button-container"
+            className="h-14 w-full bg-gradient-to-r from-violet-600 to-purple-600 text-base font-medium shadow-md transition-all hover:from-violet-700 hover:to-purple-700 hover:cursor-pointer"
+            onClick={handleOnPress} disabled={!isReady}>
             <CoinbaseIcon />
             Buy with Coinbase
         </Button>
