@@ -19,6 +19,9 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
     const [selectedPreset, setSelectedPreset] = useState<number | null>(null)
     const [account, setAccount] = useState<string>("");
     const [fUser, setFUser] = useState<any>({});
+    const [contractLoaded, setContractLoaded] = useState<boolean>(false);
+    const [contractAddress, setContractAddress] = useState<string>("");
+
 
     const presetAmounts = [5, 10, 50, 100]
 
@@ -35,7 +38,6 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
     useEffect(() => {
         const load = async () => {
             const context = await sdk.context;
-            console.log(context, " context");
             setFUser(context.user);
         }
         load()
@@ -45,10 +47,21 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
         const checkConnectedWallet = async () => {
             const { data } = await axios.get(`https://api.warpcast.com/fc/primary-address?fid=${fUser.fid}&protocol=ethereum`);
             setAccount(data.result.address.address);
-
         }
         if (fUser.fid) checkConnectedWallet();
-    }, [account, fUser]);
+    }, [fUser]);
+
+    useEffect(() => {
+        const load = async () => {
+            const { data } = await axios.get(`https://api.warpramp.link/fetch_user_contract?fid=${fUser.fid}&user_address=${account}`)
+            const { contract_address } = data;
+            setContractAddress(contract_address);
+            setContractLoaded(true);
+        }
+        if (fUser.fid && account) load();
+    }, [fUser, account]);
+
+    console.log(contractAddress);
 
 
     const handleAddFrame = useCallback(async () => {
@@ -206,7 +219,7 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
 
                         <CardFooter className="flex flex-col gap-4 px-0">
                             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full">
-                                <CBRampButton destinationWalletAddress={account} transferAmount={parseFloat(amount)} />
+                                <CBRampButton destinationWalletAddress={contractAddress} transferAmount={parseFloat(amount)} contractLoaded={contractLoaded} />
                             </motion.div>
 
                             <motion.p

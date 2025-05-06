@@ -1,18 +1,18 @@
 {
   "accountAssociation": {
     "header": "eyJmaWQiOjQ4MzcxMywidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweGQxOTE4QWI3NDljYTlGZkZkODNGMDBCMDQ1MWY3MWYyMTA4ODE3MDQifQ",
-    "payload": "eyJkb21haW4iOiJ3YXJwcmFtcC16dHF5LnZlcmNlbC5hcHAifQ",
-    "signature": "MHg1MDY1ZTk4Y2E1MWVmYjZhYjIwMjQ3ZGUzMTMwODE5MDFkYmRjNTlkNDFjOWFhNWM5MTBjMGMxZTAzNjk0ZTJkMWNhMTE0NjU4MDcwOGY0MjQ2YjU1MDVlNzY3ZTUwNzJlYjQwMWMxY2E1Zjk5MWMyMzM2NGEwYjg0OGNkMTI2NDFj"
+    "payload": "eyJkb21haW4iOiJ3YXJwcmFtcC5saW5rIn0",
+    "signature": "MHhiN2ZkOGQ0NTIzZjI3MzA0YWRhNTk1N2RlYTVlNDA5Yjg3MDU5MTMzZmU2OWEzZmE0ZDcxNjNhZjVlMTQ2OWM3MmM0OTJlYTIwMzRkZmY5MWJmNDkxYTgyYWZiZmRhMzBkZDg3MGQzODUxYmM2ZGE1YTIwNjc5N2Y5Njg2MmI2OTFj"
   },
   "frame": {
     "version": "1",
     "name": "Warp Ramp",
-    "iconUrl": "https://warpramp-ztqy.vercel.app/icon.png",
-    "homeUrl": "https://warpramp-ztqy.vercel.app/",
-    "imageUrl": "https://warpramp-ztqy.vercel.app/image.png",
+    "iconUrl": "https://warpramp.link/icon.png",
+    "homeUrl": "https://warpramp.link/",
+    "imageUrl": "https://warpramp.link/image.png",
     "buttonTitle": "Fund your Warplet",
-    "splashImageUrl": "https://warpramp-ztqy.vercel.app/splash.png",
-    "splashBackgroundColor": "#eeccff",
-    "webhookUrl": "https://warpramp-ztqy.vercel.app/api/webhook"
+    "splashImageUrl": "https://warpramp.link/splash.png",
+    "splashBackgroundColor": "#8B64D3",
+    "webhookUrl": "https://warpramp.link/api/webhook"
   }
 }
