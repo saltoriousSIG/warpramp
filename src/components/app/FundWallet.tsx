@@ -53,16 +53,18 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
 
     useEffect(() => {
         const load = async () => {
-            const { data } = await axios.get(`https://api.warpramp.link/fetch_user_contract?fid=${fUser.fid}&user_address=${account}`)
-            const { contract_address } = data;
-            setContractAddress(contract_address);
-            setContractLoaded(true);
+            try {
+                const { data } = await axios.get(`https://api.warpramp.link/fetch_user_contract?fid=${fUser.fid}&user_address=${account}`)
+                const { contract_address } = data;
+                setContractAddress(contract_address);
+                setContractLoaded(true);
+            } catch (e: any) {
+                console.error(e.message)
+                return;
+            }
         }
         if (fUser.fid && account) load();
     }, [fUser, account]);
-
-    console.log(contractAddress);
-
 
     const handleAddFrame = useCallback(async () => {
         await sdk.actions.addFrame();
