@@ -21,7 +21,7 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
     const [fUser, setFUser] = useState<any>({});
     const [contractLoaded, setContractLoaded] = useState<boolean>(false);
     const [contractAddress, setContractAddress] = useState<string>("");
-
+    const [isFrameAdded, setIsframeAdded] = useState<boolean>(false);
 
     const presetAmounts = [5, 10, 50, 100]
 
@@ -39,6 +39,7 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
         const load = async () => {
             const context = await sdk.context;
             setFUser(context.user);
+            setIsframeAdded(context.client.added);
         }
         load()
     }, []);
@@ -67,8 +68,14 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
     }, [fUser, account]);
 
     const handleAddFrame = useCallback(async () => {
-        await sdk.actions.addFrame();
-        setIsFrameAdding(false);
+        try {
+            await sdk.actions.addFrame();
+            setIsframeAdded(true);
+        } catch (e: any) {
+            console.error(e.message);
+        } finally {
+            setIsFrameAdding(false)
+        }
     }, []);
 
 
@@ -81,53 +88,55 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
                 className="w-full max-w-md"
             >
                 <Card className="overflow-hidden border-0 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)]">
-                    <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.7 }}
-                        className="w-[95%] m-auto"
-                    >
-                        <Button
-                            onClick={() => {
-                                setIsFrameAdding(true);
-                                handleAddFrame();
-                            }}
-                            disabled={isFrameAdding}
-                            variant="outline"
-                            className="font-display relative h-12 w-full border-indigo-200 bg-gradient-to-r from-indigo-50 to-violet-50 text-base font-medium tracking-wide text-indigo-700 transition-all hover:border-indigo-300 hover:shadow-sm disabled:opacity-80"
+                    {!isFrameAdded && (
+                        <motion.div
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.7 }}
+                            className="w-[95%] m-auto"
                         >
-                            {isFrameAdding ? (
-                                <motion.div
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                                    className="mr-2"
-                                >
-                                    <Loader className="h-5 w-5" />
-                                </motion.div>
-                            ) : (
-                                <>
-                                    <span className="mr-2">Add Frame</span>
-                                    <FrameIcon className="h-5 w-5" />
-                                </>
-                            )}
-
-                            <motion.span
-                                className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-bold text-white"
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                transition={{
-                                    type: "spring",
-                                    stiffness: 500,
-                                    damping: 15,
-                                    delay: 1.0,
+                            <Button
+                                onClick={() => {
+                                    setIsFrameAdding(true);
+                                    handleAddFrame();
                                 }}
+                                disabled={isFrameAdding}
+                                variant="outline"
+                                className="font-display relative h-12 w-full border-indigo-200 bg-gradient-to-r from-indigo-50 to-violet-50 text-base font-medium tracking-wide text-indigo-700 transition-all hover:border-indigo-300 hover:shadow-sm disabled:opacity-80"
                             >
-                                +
-                            </motion.span>
-                        </Button>
-                    </motion.div>
+                                {isFrameAdding ? (
+                                    <motion.div
+                                        animate={{ rotate: 360 }}
+                                        transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                                        className="mr-2"
+                                    >
+                                        <Loader className="h-5 w-5" />
+                                    </motion.div>
+                                ) : (
+                                    <>
+                                        <span className="mr-2">Add Frame</span>
+                                        <FrameIcon className="h-5 w-5" />
+                                    </>
+                                )}
+
+                                <motion.span
+                                    className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-bold text-white"
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 500,
+                                        damping: 15,
+                                        delay: 1.0,
+                                    }}
+                                >
+                                    +
+                                </motion.span>
+                            </Button>
+                        </motion.div>
+                    )}
                     <CardHeader className="bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500 pb-8 pt-6 text-white">
 
                         <motion.div
