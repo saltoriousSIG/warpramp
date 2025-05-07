@@ -45,7 +45,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 console.log('Onramp event:', event);
             },
             experienceLoggedIn: "embedded" as any,
-            experienceLoggedOut: 'popup' as any,
+            experienceLoggedOut: "embedded" as any,
             closeOnSuccess: true,
             closeOnExit: true
         };
