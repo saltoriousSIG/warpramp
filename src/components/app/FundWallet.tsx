@@ -22,6 +22,7 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
     const [contractLoaded, setContractLoaded] = useState<boolean>(false);
     const [contractAddress, setContractAddress] = useState<string>("");
     const [isFrameAdded, setIsframeAdded] = useState<boolean>(false);
+    const [loadContextError, setLoadContextError] = useState<Error | null>(null);
 
     const presetAmounts = [5, 10, 50, 100]
 
@@ -37,9 +38,13 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
 
     useEffect(() => {
         const load = async () => {
-            const context = await sdk.context;
-            setFUser(context.user);
-            setIsframeAdded(context.client.added);
+            try {
+                const context = await sdk.context;
+                setFUser(context.user);
+                setIsframeAdded(context.client.added);
+            } catch (e: any) {
+                setLoadContextError(new Error("You must load this page from within Warpcast!"))
+            }
         }
         load()
     }, []);
@@ -229,10 +234,15 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
                         </CardContent>
 
                         <CardFooter className="flex flex-col gap-4 px-0">
-                            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full">
-                                <CBRampButton destinationWalletAddress={contractAddress} transferAmount={parseFloat(amount)} contractLoaded={contractLoaded} />
-                            </motion.div>
-
+                            {loadContextError ? (
+                                <div className="text-red-500 jakarta font-bold text-xl text-center">
+                                    {loadContextError.message}
+                                </div>
+                            ) : (
+                                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full">
+                                    <CBRampButton destinationWalletAddress={contractAddress} transferAmount={parseFloat(amount)} contractLoaded={contractLoaded} />
+                                </motion.div>
+                            )}
                             <motion.p
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
