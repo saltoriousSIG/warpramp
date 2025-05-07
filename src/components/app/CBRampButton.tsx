@@ -105,7 +105,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 id="cbonramp-button-container"
                 className="h-14 w-full bg-gradient-to-r from-violet-600 to-purple-600 text-base font-medium shadow-md transition-all hover:from-violet-700 hover:to-purple-700 hover:cursor-pointer"
                 onClick={handleOnPress}
-                disabled={!isReady || !contractLoaded || isNaN(transferAmount)}
+                disabled={!isReady || !contractLoaded || isNaN(transferAmount) || transferAmount === 0}
             >
                 <CoinbaseIcon />
                 Buy with Coinbase
