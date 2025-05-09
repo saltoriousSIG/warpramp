@@ -13,6 +13,6 @@
     "buttonTitle": "Fund your Warplet",
     "splashImageUrl": "https://warpramp.link/splash.png",
     "splashBackgroundColor": "#8B64D3",
-    "webhookUrl": "https://warpramp.link/api/webhook"
+    "webhookUrl": "https://api.neynar.com/f/app/f2f219a5-527c-4982-a767-f2adb627c385/event"
   }
 }
