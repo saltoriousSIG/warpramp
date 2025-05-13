@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useFrameContext } from './FrameProdvider';
 import { handle_set_options } from '@/lib/utils';
 import { checksumAddress } from 'viem';
+import { toast } from 'sonner';
 
 
 interface RecipientsContextValue {
@@ -241,6 +242,7 @@ const RecipientsProvider: FC<RecipientsProviderProps> = ({ children }) => {
         try {
             await handle_set_options(fUser.fid, "set_delegated_recipients", values);
             setRecipientsConfirmedLoading(false)
+            toast("Recipients confirmed")
         } catch (e: any) {
             console.error(e.message);
         }
