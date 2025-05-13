@@ -1,57 +1,87 @@
-# Farcaster Mini App - NFT Mint
+Warp Ramp Frontend
+Warp Ramp is a Farcaster Frame that enables users to on-ramp funds directly into their Warplet. This frontend is built using Vite and React for a fast, modern development experience.
+Features
 
-A simple Farcaster mini app for minting an NFT. This app is built with Vite, React, TypeScript, and wagmi.
+Seamless integration with Farcaster Frames protocol
+User-friendly interface for on-ramping funds
+Direct deposit into Warplet
+Responsive design optimized for Frame environments
 
-## Overview
+Prerequisites
+Before you begin, ensure you have the following installed:
 
-This mini app demonstrates how to create a simple NFT minting experience within a Farcaster Frame. It uses:
+Node.js (v18 or later)
+npm (v9 or later) or Yarn
+A Farcaster-compatible environment for testing Frames
 
-- Vite for fast development
-- React for UI
-- TypeScript for type safety
-- wagmi for Web3 wallet connections
-- Farcaster Frame SDK for frame integration
+Setup Instructions
 
-## Features
+Clone the Repository
+git clone https://github.com/your-username/warp-ramp.git
+cd warp-ramp
 
-- Simple configuration for your own NFT collection
-- Connect Farcaster wallet via Frame
-- Mint an NFT directly in the frame
-- Success and error handling
-- Share functionality
+Install Dependencies
+Using npm:
+npm install
 
-## Getting Started
+Or using Yarn:
+yarn install
 
-1. Clone this repository
-2. Install dependencies with `pnpm install`
-3. Start the development server with `pnpm dev`
-4. Open your browser to the URL shown in the terminal
+Configure Environment Variables
+Create a .env file in the root directory and add the necessary environment variables:
+VITE_FARCASTER_API_URL=https://api.farcaster.example
+VITE_WARPLET_API_KEY=your-warplet-api-key
 
-## Configuration
+Replace the placeholder values with your actual Farcaster and Warplet API credentials.
 
-To configure the mini app for your own NFT collection, edit the `src/config.ts` file. You'll need to set:
+Run the Development Server
+Start the Vite development server:
+npm run dev
 
-- Collection name and description
-- Image URL for the NFT
-- Creator details
-- Chain and pricing information
-- Mint timing settings
+Or with Yarn:
+yarn dev
 
-You'll also need to update the contract address and ABI in `src/contracts.ts`.
+The app will be available at http://localhost:5173.
 
-## Frame Embed
+Test the Frame
 
-The Farcaster Frame meta tag is defined in `index.html`. Before deploying your app, update this tag with your actual deployment URL:
+Ensure your Farcaster Frame server is running and configured to communicate with this frontend.
+Use a Farcaster client to interact with the Warp Ramp Frame and test the on-ramp functionality.
 
-```html
-<head>
-  <!-- other tags -->
-  <meta name="fc:frame" content='{"version":"next","imageUrl":"/placeholder-nft.png","button":{"title":"Open","action":{"type":"launch_frame","name":"NFT Mint","url":"https://your-app-url.com"}}}' /> 
-</head>
-```
+Building for Production
+To create a production-ready build:
+npm run build
 
-If you change your NFT image or name in the config, be sure to update this tag as well to keep them in sync.
+Or with Yarn:
+yarn build
 
-## License
+The optimized build will be output to the dist directory. Deploy this to your preferred hosting service compatible with Farcaster Frames.
+Project Structure
+├── public/ # Static assets
+├── src/ # Source code
+│ ├── components/ # Reusable React components
+│ ├── lib/ # utilities
+│ ├── providers/ # providers
+│ ├── types/ # types
+│ ├── App.jsx # Main app component
+│ ├── main.jsx # Entry point
+│ └── index.css # Global styles
+├── .env # Environment variables
+├── index.html # HTML entry point
+├── package.json # Project dependencies and scripts
+├── vite.config.js # Vite configuration
+└── README.md # This file
 
-MIT
+Contributing
+Contributions are welcome! Please follow these steps:
+
+Fork the repository.
+Create a new branch (git checkout -b feature/your-feature).
+Commit your changes (git commit -m 'Add your feature').
+Push to the branch (git push origin feature/your-feature).
+Open a pull request.
+
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+Support
+For issues or questions, please open an issue on the GitHub repository or contact the maintainers.
