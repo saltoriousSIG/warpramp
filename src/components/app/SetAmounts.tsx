@@ -82,7 +82,7 @@ const SetAmounts: React.FC<SetAmountsProps> = () => {
                                 className="h-7 gap-x-1.5 px-3 data-[state=active]:bg-white data-[state=active]:text-purple-700 data-[state=active]:shadow-sm"
                             >
                                 <span className="h-[15px] w-1/2 flex items-center justify-center">
-                                    <EthereumIcon height={10} width={10} className="mr-1 h-1.5 w-1.5" />
+                                    <EthereumIcon className="mr-1 h-1.5 w-1.5" />
                                     ETH
                                 </span>
                             </TabsTrigger>
