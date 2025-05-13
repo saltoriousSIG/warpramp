@@ -2,12 +2,12 @@
 import { useState, useEffect, useCallback } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
+//import { Switch } from "@/components/ui/switch"
+//import { Label } from "@/components/ui/label"
+//import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { CopyIcon, ExternalLinkIcon, BellIcon } from "@/components/core/icons"
-import { useFrameContext } from "@/providers/FrameProdvider"
+import { CopyIcon, ExternalLinkIcon } from "@/components/core/icons"
+//import { useFrameContext } from "@/providers/FrameProdvider"
 import axios from 'axios'
 import sdk from "@farcaster/frame-sdk"
 
@@ -33,14 +33,14 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
     fid,
     contractAddress
 }) => {
-    const [notifications, setNotifications] = useState(true)
-    const [autoApprove, setAutoApprove] = useState(false)
+    //const [notifications, setNotifications] = useState(true)
+    //const [autoApprove, setAutoApprove] = useState(false)
     const [isCopied, setIsCopied] = useState(false)
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const [error, setError] = useState<Error | null>(null);
 
-    const { context } = useFrameContext();
-
+    // const { context } = useFrameContext();
+    console.error(error);
     const handleGoToBasescan = useCallback(async () => {
         try {
             await sdk.actions.openUrl(`https://basescan.org/address/${contractAddress}`)
