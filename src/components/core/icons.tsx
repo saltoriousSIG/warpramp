@@ -342,7 +342,7 @@ export function PercentIcon(props: LucideProps) {
   )
 }
 
-export function EthereumIcon(props: LucideProps) {
+export function EthereumIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" width="100%" height="100%" version="1.1" shapeRendering="geometricPrecision" textRendering="geometricPrecision" imageRendering="optimizeQuality" fillRule="evenodd" clipRule="evenodd"
       viewBox="0 0 784.37 1277.39"
@@ -366,7 +366,7 @@ export function EthereumIcon(props: LucideProps) {
   )
 }
 
-export function UsdcIcon(props: LucideProps) {
+export function UsdcIcon() {
   return (
     <svg data-name="86977684-12db-4850-8f30-233a7c267d11" xmlns="http://www.w3.org/2000/svg" height="100%" width="100%" viewBox="0 0 2000 2000">
       <path d="M1000 2000c554.17 0 1000-445.83 1000-1000S1554.17 0 1000 0 0 445.83 0 1000s445.83 1000 1000 1000z" fill="#2775ca" />
