@@ -8,7 +8,6 @@ import SettingsTab from "./SettingsTab"
 import { Button } from "@/components/ui/button"
 import { Loader, FrameIcon } from "@/components/core/icons"
 import { useFrameContext } from "@/providers/FrameProdvider"
-import { remove_listener_id } from "@/lib/utils"
 
 interface WarpRampProps { }
 
