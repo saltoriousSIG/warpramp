@@ -158,7 +158,7 @@ const WarpRamp: React.FC<WarpRampProps> = () => {
                                 <Wallet className="h-6 w-6" />
                             </motion.div>
                         </motion.div>
-                        <CardDescription className="mt-1 text-zinc-100 outfit">Add funds directly to your Warplet</CardDescription>
+                        <CardDescription className="mt-1 text-zinc-100 outfit">Add funds to your Warplet</CardDescription>
                     </CardHeader>
                     <div className="relative -mt-4 rounded-t-3xl bg-white px-6 pt-6">
                         <motion.div

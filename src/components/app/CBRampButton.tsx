@@ -3,22 +3,35 @@ import { initOnRamp, InitOnRampParams } from '@coinbase/cbpay-js';
 import { Button } from "../ui/button";
 import { CoinbaseIcon } from "../core/icons";
 import { toast } from "sonner"
+import { useSetAmounts } from "@/providers/SetAmountsProvider";
+import { useFrameContext } from "@/providers/FrameProdvider";
+import axios from "axios";
 
 interface CBRampButtonProps {
     destinationWalletAddress: string;
-    transferAmount: number;
     contractLoaded: boolean;
+    disabled?: boolean;
+    onCompleteAction?: () => void;
 }
 
 const CBRampButton: React.FC<CBRampButtonProps> = ({
     destinationWalletAddress,
-    transferAmount,
-    contractLoaded
+    contractLoaded,
+    disabled,
+    onCompleteAction
 }) => {
     const [isReady, setIsReady] = useState(false);
     const [isInMobile, setIsInMobile] = useState<boolean>(false);
     const onrampInstance = useRef<any>();
     const [error, setError] = useState<string | null>(null);
+
+    const { fUser } = useFrameContext();
+
+    const {
+        currency,
+        amount: transferAmount,
+        receiveEthLoading
+    } = useSetAmounts();
 
     useEffect(() => {
         const isMobile = /Mobi|Android|iPhone|iPad|iPod|warpcast/i.test(navigator.userAgent);
@@ -31,15 +44,21 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
             target: '#cbonramp-button-container',
             widgetParameters: {
                 addresses: { [destinationWalletAddress]: ['base'] },
-                presetFiatAmount: transferAmount,
-                assets: ["ETH"],
+                presetFiatAmount: parseFloat(transferAmount),
+                assets: [currency],
                 defaultNetwork: 'base',
             },
             onSuccess: () => {
+                if (onCompleteAction) onCompleteAction();
                 toast("Your purchase was successful")
+                localStorage.removeItem("onrampOpen");
+                localStorage.removeItem("listener_id");
             },
             onExit: (error: any) => {
+                if (onCompleteAction) onCompleteAction();
                 console.error('Onramp exited:', error);
+                localStorage.removeItem("onrampOpen");
+                localStorage.removeItem("listener_id");
             },
             onEvent: (event: any) => {
                 console.log('Onramp event:', event);
@@ -71,10 +90,21 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 onrampInstance.current.destroy();
             }
         };
-    }, [destinationWalletAddress, transferAmount, isInMobile]);
+    }, [destinationWalletAddress, transferAmount, isInMobile, currency]);
 
-    const handleOnPress = useCallback(() => {
+    const handleOnPress = useCallback(async () => {
         setError(null);
+        if (!fUser) return
+        if (currency === "USDC") {
+            try {
+                const { data } = await axios.get(`https://api.warpramp.link/launch_token_listener?fid=${fUser.fid}`);
+                const { id } = data;
+                localStorage.setItem("listener_id", id);
+                localStorage.setItem("onrampOpen", "true")
+            } catch (e: any) {
+                console.error(e.message)
+            }
+        }
 
         const amount = Number(transferAmount);
         if (isNaN(amount)) {
@@ -82,8 +112,8 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
             return;
         }
 
-        if (amount <= 2) {
-            setError("Amount must be greater than 2.");
+        if (amount <= 0) {
+            setError("Amount must be greater than 0.");
             return;
         }
 
@@ -97,7 +127,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
         } else {
             setError("Coinbase widget is not initialized.");
         }
-    }, [transferAmount, onrampInstance]);
+    }, [transferAmount, onrampInstance, currency, fUser]);
 
     return (
         <div className="flex flex-col items-center justify-center space-y-2">
@@ -105,10 +135,10 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 id="cbonramp-button-container"
                 className="h-14 w-full bg-gradient-to-r from-violet-600 to-purple-600 text-base font-medium shadow-md transition-all hover:from-violet-700 hover:to-purple-700 hover:cursor-pointer"
                 onClick={handleOnPress}
-                disabled={!isReady || !contractLoaded || isNaN(transferAmount) || transferAmount === 0}
+                disabled={!isReady || !contractLoaded || isNaN(parseFloat(transferAmount)) || parseFloat(transferAmount) <= 0 || disabled || !fUser || receiveEthLoading}
             >
                 <CoinbaseIcon />
-                Buy with Coinbase
+                Buy {currency} with Coinbase
             </Button>
             {error && <p className="text-red-500 mt-2">{error}</p>}
         </div>
