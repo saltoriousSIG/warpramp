@@ -2,7 +2,6 @@ import { CurrencyType } from '@/types';
 import React, { createContext, useState, ReactNode, FC, useCallback, useEffect } from 'react';
 import { handle_set_options, remove_listener_id } from '@/lib/utils';
 import { useFrameContext } from './FrameProdvider';
-import { fuse } from 'viem/chains';
 
 interface SetAmountsContextValue {
     amount: string;
