@@ -81,19 +81,15 @@ const SetAmounts: React.FC<SetAmountsProps> = () => {
                                 value="ETH"
                                 className="h-7 gap-x-1.5 px-3 data-[state=active]:bg-white data-[state=active]:text-purple-700 data-[state=active]:shadow-sm"
                             >
-                                <span className="h-[15px] w-1/2 flex items-center justify-center">
-                                    <EthereumIcon className="mr-1 h-1.5 w-1.5" />
-                                    ETH
-                                </span>
+                                <EthereumIcon className="mr-1 h-3.5 w-3.5" />
+                                ETH
                             </TabsTrigger>
                             <TabsTrigger
                                 value="USDC"
                                 className="h-7 px-3 gap-x-1.5 data-[state=active]:bg-white data-[state=active]:text-purple-700 data-[state=active]:shadow-sm"
                             >
-                                <span className="h-[15px] w-1/2 flex items-center justify-center">
-                                    <UsdcIcon className="mr-1 h-3.5 w-3.5" />
-                                    USDC
-                                </span>
+                                <UsdcIcon className="mr-1 h-3.5 w-3.5" />
+                                USDC
                             </TabsTrigger>
                         </TabsList>
                     </Tabs>
