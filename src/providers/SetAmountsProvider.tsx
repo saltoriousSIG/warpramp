@@ -1,6 +1,6 @@
 import { CurrencyType } from '@/types';
 import React, { createContext, useState, ReactNode, FC, useCallback, useEffect } from 'react';
-import { handle_set_options, remove_listener_id } from '@/lib/utils';
+import { handle_set_options } from '@/lib/utils';
 import { useFrameContext } from './FrameProdvider';
 
 interface SetAmountsContextValue {
@@ -41,12 +41,6 @@ export const SetAmountsProvider: FC<SetAmountsProviderProps> = ({ children }) =>
     const [receiveEthLoading, setReceiveEthLoading] = useState<boolean>(false);
     const { fUser } = useFrameContext();
 
-
-    useEffect(() => {
-        if (currency === "ETH") {
-            remove_listener_id();
-        }
-    }, [currency]);
 
     useEffect(() => {
         if (!fUser) return

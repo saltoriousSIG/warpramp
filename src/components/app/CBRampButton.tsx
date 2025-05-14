@@ -48,11 +48,18 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 assets: [currency],
                 defaultNetwork: 'base',
             },
-            onSuccess: () => {
+            onSuccess: async () => {
                 if (onCompleteAction) onCompleteAction();
                 toast("Your purchase was successful")
-                localStorage.removeItem("onrampOpen");
-                localStorage.removeItem("listener_id");
+                if (currency === "USDC") {
+                    try {
+                        const { data } = await axios.get(`https://api.warpramp.link/launch_token_listener?fid=${fUser?.fid}`);
+                        console.log(data)
+                    } catch (e: any) {
+                        console.error(e.message)
+                    }
+                }
+
             },
             onExit: (error: any) => {
                 if (onCompleteAction) onCompleteAction();
@@ -95,17 +102,6 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     const handleOnPress = useCallback(async () => {
         setError(null);
         if (!fUser) return
-        if (currency === "USDC") {
-            try {
-                const { data } = await axios.get(`https://api.warpramp.link/launch_token_listener?fid=${fUser.fid}`);
-                const { id } = data;
-                localStorage.setItem("listener_id", id);
-                localStorage.setItem("onrampOpen", "true")
-            } catch (e: any) {
-                console.error(e.message)
-            }
-        }
-
         const amount = Number(transferAmount);
         if (isNaN(amount)) {
             setError("Please enter a valid amount.");
