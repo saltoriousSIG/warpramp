@@ -21,6 +21,7 @@ const Component: React.FC<{
     contractLoaded
 }) => {
         const {
+            recipients,
             recipientsConfirmedLoading,
             clearRecipients
         } = useRecipients()
@@ -32,7 +33,7 @@ const Component: React.FC<{
                     <SetAmounts />
                     <div className="flex flex-col gap-4 px-0">
                         <div className="flex w-full flex-col gap-3">
-                            <CBRampButton onCompleteAction={() => clearRecipients()} destinationWalletAddress={contractAddress} contractLoaded={contractLoaded} disabled={recipientsConfirmedLoading} />
+                            <CBRampButton recipients={recipients} onCompleteAction={() => clearRecipients()} destinationWalletAddress={contractAddress} contractLoaded={contractLoaded} disabled={recipientsConfirmedLoading} />
                         </div>
 
                         <motion.p

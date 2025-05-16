@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { initOnRamp, InitOnRampParams } from '@coinbase/cbpay-js';
+
 import { Button } from "../ui/button";
 import { CoinbaseIcon } from "../core/icons";
 import { toast } from "sonner"
 import { useSetAmounts } from "@/providers/SetAmountsProvider";
 import { useFrameContext } from "@/providers/FrameProdvider";
 import axios from "axios";
+import { Recipient } from "@/types";
 
 interface CBRampButtonProps {
     destinationWalletAddress: string;
     contractLoaded: boolean;
     disabled?: boolean;
+    recipients?: Array<Recipient>
     onCompleteAction?: () => void;
 }
 
@@ -18,7 +21,8 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     destinationWalletAddress,
     contractLoaded,
     disabled,
-    onCompleteAction
+    recipients,
+    onCompleteAction,
 }) => {
     const [isReady, setIsReady] = useState(false);
     const [isInMobile, setIsInMobile] = useState<boolean>(false);
@@ -32,6 +36,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
         amount: transferAmount,
         receiveEthLoading
     } = useSetAmounts();
+
 
     useEffect(() => {
         const isMobile = /Mobi|Android|iPhone|iPad|iPod|warpcast/i.test(navigator.userAgent);
@@ -51,8 +56,6 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
             onSuccess: () => {
                 if (onCompleteAction) onCompleteAction();
                 toast("Your purchase was successful")
-
-
             },
             onExit: (error: any) => {
                 if (onCompleteAction) onCompleteAction();
@@ -69,16 +72,30 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
             closeOnExit: true
         };
 
-        if (isInMobile) {
-            options.widgetParameters.redirectUrl = "https://warpramp.link/"
-        }
-
         if (onrampInstance.current) {
             onrampInstance.current.destroy();
         }
 
         initOnRamp(options, (error, instance) => {
             if (error) return
+            if (isInMobile) {
+                const completeData: Record<string, any> = {
+                    currency,
+                    start: new Date().toString()
+                }
+                if (recipients && recipients.length > 0) {
+                    const recips = recipients.map((r) => {
+                        if (r.type === "farcaster") {
+                            return r.id;
+                        }
+                    }).filter(x => x);
+                    if (recips.length > 0) {
+                        completeData.recipients = recips
+                    }
+                }
+                options.widgetParameters.redirectUrl = `https://warpramp.link?state=${encodeURIComponent(JSON.stringify(completeData))}`
+            }
+
             if (instance) {
                 onrampInstance.current = instance;
                 setIsReady(true);

@@ -1,4 +1,4 @@
-"use client"
+import { useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
@@ -9,9 +9,19 @@ import { Button } from "@/components/ui/button"
 import { Loader, FrameIcon } from "@/components/core/icons"
 import { useFrameContext } from "@/providers/FrameProdvider"
 
+
 interface WarpRampProps { }
 
 const WarpRamp: React.FC<WarpRampProps> = ({ }) => {
+
+    // useEffect(() => {
+    //     // Get search params from the current URL
+    //     const searchParams = new URLSearchParams(window.location.search);
+    //     // Access individual params
+    //     const state = searchParams.get('state'); // e.g., "bar"
+    //     console.log(state)
+    // }, []);
+
     const {
         fUser,
         account,
