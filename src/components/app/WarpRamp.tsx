@@ -40,7 +40,7 @@ const WarpRamp: React.FC<WarpRampProps> = ({ }) => {
             } = data;
             console.log(currency, recipients, start)
             sdk.actions.composeCast({
-                text: `I just got funded via Warp Ramp @saltorious.eth`,
+                text: `I just got funded via Warp Ramp`,
                 embeds: ["https://warpramp.link"]
             })
         }
