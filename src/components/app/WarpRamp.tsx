@@ -1,4 +1,4 @@
-//import { useEffect } from "react"
+import { useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
@@ -8,21 +8,13 @@ import SettingsTab from "./SettingsTab"
 import { Button } from "@/components/ui/button"
 import { Loader, FrameIcon } from "@/components/core/icons"
 import { useFrameContext } from "@/providers/FrameProdvider"
-
+import sdk from "@farcaster/frame-sdk"
 
 interface WarpRampProps { }
 
 const WarpRamp: React.FC<WarpRampProps> = ({ }) => {
-
-    // useEffect(() => {
-    //     // Get search params from the current URL
-    //     const searchParams = new URLSearchParams(window.location.search);
-    //     // Access individual params
-    //     const state = searchParams.get('state'); // e.g., "bar"
-    //     console.log(state)
-    // }, []);
-
     const {
+        context,
         fUser,
         account,
         contractAddress,
@@ -32,6 +24,29 @@ const WarpRamp: React.FC<WarpRampProps> = ({ }) => {
         handleAddFrame,
         handleSetIsFrameAdding
     } = useFrameContext();
+
+    useEffect(() => {
+        if (!context) return
+        // Get search params from the current URL
+        const searchParams = new URLSearchParams(window.location.search);
+        // Access individual params
+        const state = searchParams.get('state'); // e.g., "bar"
+        if (state) {
+            const data = JSON.parse(decodeURIComponent(state));
+            const {
+                currency,
+                recipients,
+                start
+            } = data;
+            console.log(currency, recipients, start)
+            sdk.actions.composeCast({
+                text: `I just got funded via Warp Ramp`,
+                embeds: ["https://warpramp.link"]
+            })
+        }
+    }, [context]);
+
+
 
     if (!fUser) {
         return (
