@@ -72,29 +72,32 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
             closeOnExit: true
         };
 
+        if (isInMobile) {
+            const completeData: Record<string, any> = {
+                currency,
+                start: new Date().toString()
+            }
+            if (recipients && recipients.length > 0) {
+                const recips = recipients.map((r) => {
+                    if (r.type === "farcaster") {
+                        return r.id;
+                    }
+                }).filter(x => x);
+                if (recips.length > 0) {
+                    completeData.recipients = recips
+                }
+            }
+            options.widgetParameters.redirectUrl = `https://warpramp.link?state=${encodeURIComponent(JSON.stringify(completeData))}`
+        }
+
         if (onrampInstance.current) {
             onrampInstance.current.destroy();
         }
 
+
         initOnRamp(options, (error, instance) => {
             if (error) return
-            if (isInMobile) {
-                const completeData: Record<string, any> = {
-                    currency,
-                    start: new Date().toString()
-                }
-                if (recipients && recipients.length > 0) {
-                    const recips = recipients.map((r) => {
-                        if (r.type === "farcaster") {
-                            return r.id;
-                        }
-                    }).filter(x => x);
-                    if (recips.length > 0) {
-                        completeData.recipients = recips
-                    }
-                }
-                options.widgetParameters.redirectUrl = `https://warpramp.link?state=${encodeURIComponent(JSON.stringify(completeData))}`
-            }
+
 
             if (instance) {
                 onrampInstance.current = instance;
