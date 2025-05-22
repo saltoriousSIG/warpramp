@@ -51,7 +51,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 addresses: { [destination]: network },
                 presetFiatAmount: parseFloat(transferAmount),
                 assets: [currency],
-                defaultNetwork: 'base',
+                defaultNetwork: currency === "SOL" ? "solana" : 'base',
             },
             onSuccess: () => {
                 if (onCompleteAction) onCompleteAction();
