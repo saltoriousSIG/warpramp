@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EthereumIcon, UsdcIcon, SwapIcon } from "../core/icons";
+import { EthereumIcon, UsdcIcon, SwapIcon, SolIcon } from "../core/icons";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,8 @@ interface SetAmountsProps { }
 
 const SetAmounts: React.FC<SetAmountsProps> = () => {
     const {
-        isFrameAdded
+        isFrameAdded,
+        solAddress
     } = useFrameContext();
     const {
         amount,
@@ -91,6 +92,15 @@ const SetAmounts: React.FC<SetAmountsProps> = () => {
                                 <UsdcIcon className="mr-1 h-3.5 w-3.5" />
                                 USDC
                             </TabsTrigger>
+                            {solAddress && (
+                                <TabsTrigger
+                                    value="SOL"
+                                    className="h-7 px-3 gap-x-1.5 data-[state=active]:bg-white data-[state=active]:text-purple-700 data-[state=active]:shadow-sm"
+                                >
+                                    <SolIcon className="mr-1 h-3.5 w-3.5" />
+                                    SOL
+                                </TabsTrigger>
+                            )}
                         </TabsList>
                     </Tabs>
                 </div>

@@ -6,6 +6,7 @@ interface FrameContextValue {
     account: string;
     context: FrameHost['context'] | null;
     contractAddress: string;
+    solAddress: string;
     contractLoaded: boolean;
     errors: Record<string, Error> | null;
     fUser: FrameHost['context']['user'] | null;
@@ -30,6 +31,7 @@ export function FrameSDKProvider({ children }: { children: React.ReactNode }) {
     const [context, setContext] = useState<FrameHost['context'] | null>(null);
     const [contractAddress, setContractAddress] = useState<string>("");
     const [contractLoaded, setContractLoaded] = useState<boolean>(false)
+    const [solAddress, setSolAddress] = useState<string>("");
     const [errors, setErrors] = useState<Record<string, Error> | null>(null);
     const [fUser, setFUser] = useState<FrameHost['context']['user'] | null>(null);
     const [isFrameAdded, setIsframeAdded] = useState<boolean>(false);
@@ -97,8 +99,9 @@ export function FrameSDKProvider({ children }: { children: React.ReactNode }) {
         const load = async () => {
             try {
                 const { data } = await axios.get(`https://api.warpramp.link/fetch_user_contract?fid=${fUser?.fid}&user_address=${account}&version=v1`)
-                const { contract_address } = data;
+                const { contract_address, sol_address } = data;
                 setContractAddress(contract_address);
+                setSolAddress(sol_address)
                 setContractLoaded(true);
             } catch (e: any) {
                 setErrors({
@@ -115,6 +118,7 @@ export function FrameSDKProvider({ children }: { children: React.ReactNode }) {
             account,
             context,
             contractAddress,
+            solAddress,
             contractLoaded,
             errors,
             fUser,
