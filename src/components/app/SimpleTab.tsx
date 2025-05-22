@@ -6,6 +6,8 @@ import { Wallet, Check } from "@/components/core/icons"
 import CBRampButton from "./CBRampButton"
 import { SetAmountsProvider } from "@/providers/SetAmountsProvider"
 import SetAmounts from "./SetAmounts"
+import { useSetAmounts } from "@/providers/SetAmountsProvider"
+import { useFrameContext } from "@/providers/FrameProdvider"
 
 interface SimpleTabProps {
     account: string;
@@ -14,6 +16,8 @@ interface SimpleTabProps {
 }
 
 const SimpleTab: React.FC<SimpleTabProps> = ({ account, contractAddress, contractLoaded }) => {
+    const { currency } = useSetAmounts();
+    const { solAddress } = useFrameContext();
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -47,7 +51,7 @@ const SimpleTab: React.FC<SimpleTabProps> = ({ account, contractAddress, contrac
                 <SetAmounts />
                 <div className="flex flex-col gap-4 px-0">
                     <div className="flex w-full flex-col gap-3">
-                        <CBRampButton destinationWalletAddress={contractAddress} contractLoaded={contractLoaded} />
+                        <CBRampButton destinationWalletAddress={currency === "SOL" ? solAddress : contractAddress} contractLoaded={contractLoaded} />
                     </div>
 
                     <motion.p

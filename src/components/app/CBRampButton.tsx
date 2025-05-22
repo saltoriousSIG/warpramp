@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { initOnRamp, InitOnRampParams } from '@coinbase/cbpay-js';
-
 import { Button } from "../ui/button";
 import { CoinbaseIcon } from "../core/icons";
 import { toast } from "sonner"
@@ -36,7 +35,6 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
         amount: transferAmount,
         receiveEthLoading
     } = useSetAmounts();
-
 
     useEffect(() => {
         const isMobile = /Mobi|Android|iPhone|iPad|iPod|warpcast/i.test(navigator.userAgent);
