@@ -44,11 +44,12 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     }, [])
 
     useEffect(() => {
+        const network = currency === "SOL" ? ['solana'] : ["base"]
         const options: InitOnRampParams = {
             appId: (import.meta as any).env.VITE_CB_APP_ID,
             target: '#cbonramp-button-container',
             widgetParameters: {
-                addresses: { [destinationWalletAddress]: ['base'] },
+                addresses: { [destinationWalletAddress]: network },
                 presetFiatAmount: parseFloat(transferAmount),
                 assets: [currency],
                 defaultNetwork: 'base',

@@ -1,4 +1,4 @@
-export type CurrencyType = "ETH" | "USDC";
+export type CurrencyType = "ETH" | "USDC" | "SOL";
 
 export type Allocations = "equal" | "custom";
 
