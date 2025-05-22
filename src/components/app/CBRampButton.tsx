@@ -28,7 +28,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     const onrampInstance = useRef<any>();
     const [error, setError] = useState<string | null>(null);
 
-    const { fUser } = useFrameContext();
+    const { fUser, solAddress } = useFrameContext();
 
     const {
         currency,
@@ -43,11 +43,12 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
 
     useEffect(() => {
         const network = currency === "SOL" ? ['solana'] : ["base"]
+        const destination = currency === "SOL" ? solAddress : destinationWalletAddress
         const options: InitOnRampParams = {
             appId: (import.meta as any).env.VITE_CB_APP_ID,
             target: '#cbonramp-button-container',
             widgetParameters: {
-                addresses: { [destinationWalletAddress]: network },
+                addresses: { [destination]: network },
                 presetFiatAmount: parseFloat(transferAmount),
                 assets: [currency],
                 defaultNetwork: 'base',
@@ -109,7 +110,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 onrampInstance.current.destroy();
             }
         };
-    }, [destinationWalletAddress, transferAmount, isInMobile, currency]);
+    }, [destinationWalletAddress, transferAmount, isInMobile, currency, solAddress]);
 
     const handleOnPress = useCallback(async () => {
         setError(null);
