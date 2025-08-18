@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { initOnRamp, InitOnRampParams, generateOnRampURL } from '@coinbase/cbpay-js';
+import React, { useState, useEffect } from "react";
+import { generateOnRampURL } from '@coinbase/cbpay-js';
 import { Button } from "../ui/button";
 import { CoinbaseIcon } from "../core/icons";
-import { toast } from "sonner"
 import { useSetAmounts } from "@/providers/SetAmountsProvider";
 import { useFrameContext } from "@/providers/FrameProdvider";
 import axios from "axios";
@@ -21,11 +20,8 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     contractLoaded,
     disabled,
     recipients,
-    onCompleteAction,
 }) => {
-    const [isReady, setIsReady] = useState(false);
     const [isInMobile, setIsInMobile] = useState<boolean>(false);
-    const onrampInstance = useRef<any>();
     const [error, setError] = useState<string | null>(null);
     const [sessionToken, setSessionToken] = useState<string>();
     const [cbpayUrl, setCbPayUrl] = useState<string>();
@@ -103,113 +99,8 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
             assets: [currency],
             defaultNetwork: currency === "SOL" ? "solana" : 'base'
         })
-        console.log(url)
         setCbPayUrl(url);
     }, [sessionToken, destinationWalletAddress, currency, transferAmount]);
-
-    // useEffect(() => {
-    //     const network = currency === "SOL" ? ['solana'] : ["base"]
-    //     const destination = currency === "SOL" ? solAddress : destinationWalletAddress
-    //     const options: InitOnRampParams = {
-    //         appId: (import.meta as any).env.VITE_CB_APP_ID,
-    //         target: '#cbonramp-button-container',
-    //         widgetParameters: {
-    //             addresses: { [destination]: network },
-    //             presetFiatAmount: parseFloat(transferAmount),
-    //             assets: [currency],
-    //             defaultNetwork: currency === "SOL" ? "solana" : 'base',
-    //         },
-    //         onSuccess: () => {
-    //             if (onCompleteAction) onCompleteAction();
-    //             toast("Your purchase was successful")
-    //         },
-    //         onExit: (error: any) => {
-    //             if (onCompleteAction) onCompleteAction();
-    //             console.error('Onramp exited:', error);
-    //             localStorage.removeItem("onrampOpen");
-    //             localStorage.removeItem("listener_id");
-    //         },
-    //         onEvent: (event: any) => {
-    //             console.log('Onramp event:', event);
-    //         },
-    //         experienceLoggedIn: "embedded" as any,
-    //         experienceLoggedOut: "popup" as any,
-    //         closeOnSuccess: true,
-    //         closeOnExit: true,
-    //     };
-
-    //     if (isInMobile) {
-    //         const completeData: Record<string, any> = {
-    //             currency,
-    //             start: new Date().toString()
-    //         }
-    //         if (recipients && recipients.length > 0) {
-    //             const recips = recipients.map((r) => {
-    //                 if (r.type === "farcaster") {
-    //                     return r.id;
-    //                 }
-    //             }).filter(x => x);
-    //             if (recips.length > 0) {
-    //                 completeData.recipients = recips
-    //             }
-    //         }
-    //         options.widgetParameters.redirectUrl = `https://warpramp.link?state=${encodeURIComponent(JSON.stringify(completeData))}`
-    //     }
-
-    //     if (onrampInstance.current) {
-    //         onrampInstance.current.destroy();
-    //     }
-
-
-    //     initOnRamp(options, (error, instance) => {
-    //         if (error) return
-
-
-    //         if (instance) {
-    //             onrampInstance.current = instance;
-    //             setIsReady(true);
-    //         }
-    //     });
-
-    //     return () => {
-    //         if (onrampInstance.current) {
-    //             onrampInstance.current.destroy();
-    //         }
-    //     };
-    // }, [destinationWalletAddress, transferAmount, isInMobile, currency, solAddress]);
-
-    // const handleOnPress = useCallback(async () => {
-    //     setError(null);
-    //     if (!fUser) return
-    //     if (currency === "USDC") {
-    //         try {
-    //             const { data } = await axios.get(`https://api.warpramp.link/launch_token_listener?fid=${fUser?.fid}`);
-    //         } catch (e: any) {
-    //             console.error(e.message)
-    //         }
-    //     }
-    //     const amount = Number(transferAmount);
-    //     if (isNaN(amount)) {
-    //         setError("Please enter a valid amount.");
-    //         return;
-    //     }
-
-    //     if (amount <= 0) {
-    //         setError("Amount must be greater than 0.");
-    //         return;
-    //     }
-
-    //     if (amount > 5000) {
-    //         setError("Amount exceeds maximum limit of 5,000.");
-    //         return;
-    //     }
-
-    //     if (onrampInstance.current) {
-    //         onrampInstance.current.open();
-    //     } else {
-    //         setError("Coinbase widget is not initialized.");
-    //     }
-    // }, [transferAmount, onrampInstance, currency, fUser]);
 
     return (
         <div className="flex flex-col items-center justify-center space-y-2">
