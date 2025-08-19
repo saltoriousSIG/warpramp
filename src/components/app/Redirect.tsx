@@ -18,7 +18,7 @@ const Redirect: React.FC<RedirectProps> = ({ }) => {
         window.location.replace("https://farcaster.xyz/miniapps/IicCFtcNbkXu/warp-ramp")
     }, [request_id]);
 
-    return null
+    return <></>
 }
 
 export default Redirect;
