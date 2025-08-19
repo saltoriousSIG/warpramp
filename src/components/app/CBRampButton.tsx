@@ -77,48 +77,49 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
         const request_id = uuidv4()
         const addTransferQueue = async () => {
             try {
-                await axios.post("https://api.warpramp.link/add_transfer_queue", {
-                    request_id,
-                    ramp_address: destinationWalletAddress,
-                    token: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-                    pool_fee: 500
-                });
+                const network = currency === "SOL" ? ['solana'] : ["base"]
+                const destination = currency === "SOL" ? solAddress : destinationWalletAddress
+                const completeData: Record<string, any> = {
+                    currency,
+                    start: new Date().toString()
+                }
+                if (recipients && recipients.length > 0) {
+                    const recips = recipients.map((r) => {
+                        if (r.type === "farcaster") {
+                            return r.id;
+                        }
+                    }).filter(x => x);
+                    if (recips.length > 0) {
+                        completeData.recipients = recips
+                    }
+                }
+                if (currency === "USDC") {
+                    const { data } = await axios.post("https://api.warpramp.link/set_token_request", {
+                        request_id,
+                        ramp_address: destinationWalletAddress,
+                        token: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                        pool_fee: 500
+                    });
+                    console.log(data)
+                }
+
+                const url = generateOnRampURL({
+                    appId: (import.meta as any).env.VITE_CB_APP_ID,
+                    sessionToken,
+                    addresses: { [destination]: network },
+                    redirectUrl: currency === "USDC" ? `https://warpramp.link/redirect?request_id=${request_id}` : "https://farcaster.xyz/miniapps/IicCFtcNbkXu/warp-ramp",
+                    presetFiatAmount: parseFloat(transferAmount),
+                    assets: [currency],
+                    defaultNetwork: currency === "SOL" ? "solana" : 'base'
+                })
+                setCbPayUrl(url);
+
             } catch (e: any) {
                 console.error(e.message);
             }
         }
-
-
         if (!sessionToken) return;
-        const network = currency === "SOL" ? ['solana'] : ["base"]
-        const destination = currency === "SOL" ? solAddress : destinationWalletAddress
-        const completeData: Record<string, any> = {
-            currency,
-            start: new Date().toString()
-        }
-        if (recipients && recipients.length > 0) {
-            const recips = recipients.map((r) => {
-                if (r.type === "farcaster") {
-                    return r.id;
-                }
-            }).filter(x => x);
-            if (recips.length > 0) {
-                completeData.recipients = recips
-            }
-        }
-
-        if (currency === "USDC") addTransferQueue();
-
-        const url = generateOnRampURL({
-            appId: (import.meta as any).env.VITE_CB_APP_ID,
-            sessionToken,
-            addresses: { [destination]: network },
-            redirectUrl: currency === "USDC" ? `https://warpramp.link/redirect?request_id=${request_id}` : "https://farcaster.xyz/miniapps/IicCFtcNbkXu/warp-ramp",
-            presetFiatAmount: parseFloat(transferAmount),
-            assets: [currency],
-            defaultNetwork: currency === "SOL" ? "solana" : 'base'
-        })
-        setCbPayUrl(url);
+        addTransferQueue();
     }, [sessionToken, destinationWalletAddress, currency, transferAmount]);
 
     return (
