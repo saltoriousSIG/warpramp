@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { generateOnRampURL } from '@coinbase/cbpay-js';
 import { Button } from "../ui/button";
 import { CoinbaseIcon } from "../core/icons";
@@ -73,54 +73,54 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
         load();
     }, [destinationWalletAddress, transferAmount, isInMobile, currency, solAddress]);
 
-    useEffect(() => {
+    const setUrl = useCallback(async () => {
         const request_id = uuidv4()
-        const addTransferQueue = async () => {
-            try {
-                const network = currency === "SOL" ? ['solana'] : ["base"]
-                const destination = currency === "SOL" ? solAddress : destinationWalletAddress
-                const completeData: Record<string, any> = {
-                    currency,
-                    start: new Date().toString()
-                }
-                if (recipients && recipients.length > 0) {
-                    const recips = recipients.map((r) => {
-                        if (r.type === "farcaster") {
-                            return r.id;
-                        }
-                    }).filter(x => x);
-                    if (recips.length > 0) {
-                        completeData.recipients = recips
-                    }
-                }
-                if (currency === "USDC") {
-                    const { data } = await axios.post("https://api.warpramp.link/set_token_request", {
-                        request_id,
-                        ramp_address: destinationWalletAddress,
-                        token: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-                        pool_fee: 500
-                    });
-                    console.log(data)
-                }
-
-                const url = generateOnRampURL({
-                    appId: (import.meta as any).env.VITE_CB_APP_ID,
-                    sessionToken,
-                    addresses: { [destination]: network },
-                    redirectUrl: currency === "USDC" ? `https://warpramp.link/redirect?request_id=${request_id}` : "https://farcaster.xyz/miniapps/IicCFtcNbkXu/warp-ramp",
-                    presetFiatAmount: parseFloat(transferAmount),
-                    assets: [currency],
-                    defaultNetwork: currency === "SOL" ? "solana" : 'base'
-                })
-                setCbPayUrl(url);
-
-            } catch (e: any) {
-                console.error(e.message);
+        try {
+            const network = currency === "SOL" ? ['solana'] : ["base"]
+            const destination = currency === "SOL" ? solAddress : destinationWalletAddress
+            const completeData: Record<string, any> = {
+                currency,
+                start: new Date().toString()
             }
+            if (recipients && recipients.length > 0) {
+                const recips = recipients.map((r) => {
+                    if (r.type === "farcaster") {
+                        return r.id;
+                    }
+                }).filter(x => x);
+                if (recips.length > 0) {
+                    completeData.recipients = recips
+                }
+            }
+            if (currency === "USDC") {
+                const { data } = await axios.post("https://api.warpramp.link/set_token_request", {
+                    request_id,
+                    ramp_address: destinationWalletAddress,
+                    token: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                    pool_fee: 500
+                });
+                console.log(data)
+            }
+
+            const url = generateOnRampURL({
+                appId: (import.meta as any).env.VITE_CB_APP_ID,
+                sessionToken,
+                addresses: { [destination]: network },
+                redirectUrl: currency === "USDC" ? `https://warpramp.link/redirect?request_id=${request_id}` : "https://farcaster.xyz/miniapps/IicCFtcNbkXu/warp-ramp",
+                presetFiatAmount: parseFloat(transferAmount),
+                assets: [currency],
+                defaultNetwork: currency === "SOL" ? "solana" : 'base'
+            })
+            setCbPayUrl(url);
+
+        } catch (e: any) {
+            console.error(e.message);
         }
+    }, [currency, destinationWalletAddress, transferAmount, sessionToken])
+    useEffect(() => {
         if (!sessionToken) return;
-        addTransferQueue();
-    }, [sessionToken, destinationWalletAddress, currency, transferAmount]);
+        setUrl();
+    }, [setUrl]);
 
     return (
         <div className="flex flex-col items-center justify-center space-y-2">
