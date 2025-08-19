@@ -126,7 +126,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 onClick={async () => {
                     if (currency === "USDC") {
                         await axios.post("https://api.warpramp.link/set_token_request", {
-                            requestId,
+                            request_id: requestId,
                             ramp_address: destinationWalletAddress,
                             token: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
                             pool_fee: 500
