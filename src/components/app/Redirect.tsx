@@ -10,7 +10,7 @@ const Redirect: React.FC<RedirectProps> = ({ }) => {
 
     useEffect(() => {
         const load = async () => {
-            await axios.post("https://warpramp.link/add_transfer_queue", {
+            await axios.post("https://api.warpramp.link/add_transfer_queue", {
                 request_id
             });
         }
