@@ -7,6 +7,7 @@ import { useFrameContext } from "@/providers/FrameProdvider";
 import axios from "axios";
 import { Recipient } from "@/types";
 import sdk from "@farcaster/frame-sdk";
+import { v4 as uuidv4 } from 'uuid';
 interface CBRampButtonProps {
     destinationWalletAddress: string;
     contractLoaded: boolean;
@@ -73,6 +74,21 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
     }, [destinationWalletAddress, transferAmount, isInMobile, currency, solAddress]);
 
     useEffect(() => {
+        const request_id = uuidv4()
+        const addTransferQueue = async () => {
+            try {
+                await axios.post("https://api.warpramp.link/add_transfer_queue", {
+                    request_id,
+                    ramp_address: destinationWalletAddress,
+                    token: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                    pool_fee: 500
+                });
+            } catch (e: any) {
+                console.error(e.message);
+            }
+        }
+
+
         if (!sessionToken) return;
         const network = currency === "SOL" ? ['solana'] : ["base"]
         const destination = currency === "SOL" ? solAddress : destinationWalletAddress
@@ -90,11 +106,14 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 completeData.recipients = recips
             }
         }
+
+        if (currency === "USDC") addTransferQueue();
+
         const url = generateOnRampURL({
             appId: (import.meta as any).env.VITE_CB_APP_ID,
             sessionToken,
             addresses: { [destination]: network },
-            redirectUrl: "https://farcaster.xyz/miniapps/IicCFtcNbkXu/warp-ramp",
+            redirectUrl: currency === "USDC" ? `https://warpramp.link/redirect?request_id=${request_id}` : "https://farcaster.xyz/miniapps/IicCFtcNbkXu/warp-ramp",
             presetFiatAmount: parseFloat(transferAmount),
             assets: [currency],
             defaultNetwork: currency === "SOL" ? "solana" : 'base'
