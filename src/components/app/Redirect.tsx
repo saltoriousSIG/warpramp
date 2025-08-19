@@ -14,8 +14,9 @@ const Redirect: React.FC<RedirectProps> = ({ }) => {
                 request_id
             });
         }
-        load();
-        window.location.replace("https://farcaster.xyz/miniapps/IicCFtcNbkXu/warp-ramp")
+        load().finally(() => {
+            window.location.replace("https://farcaster.xyz/miniapps/IicCFtcNbkXu/warp-ramp")
+        });
     }, [request_id]);
 
     return <></>
