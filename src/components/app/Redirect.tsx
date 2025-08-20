@@ -1,14 +1,14 @@
 import React from "react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 
 interface RedirectProps { }
 
 const Redirect: React.FC<RedirectProps> = ({ }) => {
-    const { request_id } = useParams();
+    const [searchParams] = useSearchParams();
 
-    console.log(request_id);
+    const request_id = searchParams.get("request_id");
 
     useEffect(() => {
         const load = async () => {
