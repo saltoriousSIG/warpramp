@@ -102,7 +102,7 @@ const CBRampButton: React.FC<CBRampButtonProps> = ({
                 appId: (import.meta as any).env.VITE_CB_APP_ID,
                 sessionToken,
                 addresses: { [destination]: network },
-                redirectUrl: currency === "USDC" ? `https://warpramp.link/redirect?request_id=${request_id}` : "https://farcaster.xyz/miniapps/IicCFtcNbkXu/warp-ramp",
+                redirectUrl: currency === "USDC" ? `https://warpramp.link/redirect?request_id=${request_id}&ramp_address=${destinationWalletAddress}` : "https://farcaster.xyz/miniapps/IicCFtcNbkXu/warp-ramp",
                 presetFiatAmount: parseFloat(transferAmount),
                 assets: [currency],
                 defaultNetwork: currency === "SOL" ? "solana" : 'base'
