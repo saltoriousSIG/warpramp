@@ -25,10 +25,7 @@ const Redirect: React.FC<RedirectProps> = ({ }) => {
             event: parseAbi(['event Transfer(address indexed from, address indexed to, uint256 value)'])[0],
             onLogs: (logs) => {
                 console.log(logs);
-                const transfer = logs.find(log => log.args.to?.toLowerCase() === rampAddress.toLowerCase())
-                if (transfer) {
-                    onTransfer(transfer)
-                }
+                onTransfer()
             }
         })
     }
