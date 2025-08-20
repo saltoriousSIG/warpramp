@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { Card, CardContent } from "@/components/ui/card"
-import { createPublicClient, http, parseAbi } from "viem";
+import { createPublicClient, webSocket, parseAbi } from "viem";
 import { base } from "viem/chains";
 import { Loader2 } from "lucide-react"
 
@@ -15,10 +15,10 @@ const Redirect: React.FC<RedirectProps> = ({ }) => {
     const request_id = searchParams.get("request_id");
     const ramp_address = searchParams.get("ramp_address");
 
-    function watchTransfer(rpcUrl: string, usdcAddress: `0x${string}`, rampAddress: `0x${string}`, onTransfer: Function) {
+    function watchTransfer(usdcAddress: `0x${string}`, rampAddress: `0x${string}`, onTransfer: Function) {
         const client = createPublicClient({
             chain: base,
-            transport: http(rpcUrl)
+            transport: webSocket("wss://base-rpc.publicnode.com")
         })
         return client.watchEvent({
             address: usdcAddress,
@@ -35,7 +35,6 @@ const Redirect: React.FC<RedirectProps> = ({ }) => {
 
     useEffect(() => {
         const unwatch = watchTransfer(
-            'https://mainnet.base.org',
             '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
             ramp_address as `0x${string}`,
             async () => {
