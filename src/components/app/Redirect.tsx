@@ -8,6 +8,8 @@ interface RedirectProps { }
 const Redirect: React.FC<RedirectProps> = ({ }) => {
     const { request_id } = useParams();
 
+    console.log(request_id);
+
     useEffect(() => {
         const load = async () => {
             await axios.post("https://api.warpramp.link/add_transfer_queue", {
