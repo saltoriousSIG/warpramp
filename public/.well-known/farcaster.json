@@ -14,5 +14,8 @@
     "splashImageUrl": "https://warpramp.link/splash.png",
     "splashBackgroundColor": "#8B64D3",
     "webhookUrl": "https://api.neynar.com/f/app/f2f219a5-527c-4982-a767-f2adb627c385/event"
+  },
+  "baseBuilder": {
+    "allowedAddresses": ["0x042cB6C85F434e7c610c3E91744bD5D38C898f72"]
   }
 }
