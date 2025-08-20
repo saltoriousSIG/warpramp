@@ -15,7 +15,7 @@ const Redirect: React.FC<RedirectProps> = ({ }) => {
     const request_id = searchParams.get("request_id");
     const ramp_address = searchParams.get("ramp_address");
 
-    function watchTransfer(rpcUrl: string, usdcAddress: `0x${string}`, rampAddress: string, onTransfer: Function) {
+    function watchTransfer(rpcUrl: string, usdcAddress: `0x${string}`, rampAddress: `0x${string}`, onTransfer: Function) {
         const client = createPublicClient({
             chain: base,
             transport: http(rpcUrl)
@@ -23,6 +23,9 @@ const Redirect: React.FC<RedirectProps> = ({ }) => {
         return client.watchEvent({
             address: usdcAddress,
             event: parseAbi(['event Transfer(address indexed from, address indexed to, uint256 value)'])[0],
+            args: {
+                to: rampAddress
+            },
             onLogs: (logs) => {
                 console.log(logs);
                 onTransfer()
@@ -34,7 +37,7 @@ const Redirect: React.FC<RedirectProps> = ({ }) => {
         const unwatch = watchTransfer(
             'https://mainnet.base.org',
             '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-            ramp_address as string,
+            ramp_address as `0x${string}`,
             async () => {
                 // Transfer detected - add to queue
                 await axios.post("https://api.warpramp.link/add_transfer_queue", {
